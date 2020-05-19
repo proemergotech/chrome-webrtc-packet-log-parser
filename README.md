@@ -44,3 +44,7 @@ webrtc_event_log_20200514_1817_191_3.log opened
 38776:  {"RtpPacket":{"incoming":false,"packet_length":1081,"header":"kHw0y04p977SPnYkvt4AAiLAqwIxNGsA"}}
 38777:  {"RtpPacket":{"incoming":false,"packet_length":1082,"header":"kHw0zE4p977SPnYkvt4AAiLAqwIxNGwA"}}
 ```
+
+### License
+
+[MIT](LICENSE)

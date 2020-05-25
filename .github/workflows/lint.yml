@@ -1,8 +1,11 @@
-name: Linter
+name: Linters
 
 on: pull_request
 
 jobs:
   build:
-    - name: Run linter
-      uses: actions-contrib/golangci-lint@v1
+    runs-on: ubuntu-latest
+    name: golangci-lint
+    steps:
+      - name: Run linter
+        uses: actions-contrib/golangci-lint@v1

@@ -1,0 +1,1 @@
+Contributions are welcome in the form of merge requests/issues. Please alway run `go mod tidy` before submitting a merge request.

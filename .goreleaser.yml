@@ -1,7 +1,3 @@
-before:
-  hooks:
-    - go mod tidy
-
 archives:
   - replacements:
       darwin: Darwin
@@ -25,7 +21,7 @@ changelog:
 
 builds:
   - binary: webrtc-log-parser
-    id: webrtc-log-parser
+    id: chrome-webrtc-packet-log-parser
     goos:
       - darwin
       - windows
@@ -36,4 +32,5 @@ builds:
       - 386
     env:
       - CGO_ENABLED=0
-    main: .
+    flags:
+      - -mod=readonly

@@ -1,5 +1,9 @@
 # chrome-webrtc-packet-log-parser
 
+### Project status
+
+At this point the project is primerly intended to be used by checking it out and modifying main.go, however you can also use it by downloading the binaries from releases.
+
 ### Overview
 Go command-line application to make chrome generated webrtc `diagnostic packet and event recording` human readable.    
 For more information see [here](https://tokbox.com/blog/how-to-get-a-webrtc-diagnostic-recording-from-chrome-49/).

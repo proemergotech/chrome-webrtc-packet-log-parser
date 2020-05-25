@@ -1,0 +1,8 @@
+name: Linter
+
+on: pull_request
+
+jobs:
+  build:
+    - name: Run linter
+      uses: actions-contrib/golangci-lint@v1

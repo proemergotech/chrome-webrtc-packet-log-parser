@@ -1,6 +1,6 @@
 name: Go
 
-on: [push, pull_request]
+on: push
 #on:
 #  push:
 #    branches: [ master ]
@@ -8,7 +8,7 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: goreleaser
+    name: webrtc-log-parser
     steps:
 
       - name: Set up Go
@@ -24,7 +24,7 @@ jobs:
         run: |
           go mod download
 
-      - name: goreleaser
+      - name: GoReleaser
         uses: goreleaser/goreleaser-action@master
         with:
           args: release

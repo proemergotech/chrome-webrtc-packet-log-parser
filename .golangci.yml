@@ -1,0 +1,60 @@
+run:
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  deadline: 1m
+
+  # include test files or not, default is true
+  tests: true
+
+  # by default isn't set. If set we pass it to "go list -mod={option}". From "go help modules":
+  # If invoked with -mod=readonly, the go command is disallowed from the implicit
+  # automatic updating of go.mod described above. Instead, it fails when any changes
+  # to go.mod are needed. This setting is most useful to check that go.mod does
+  # not need updates, such as in a continuous integration and testing system.
+  # If invoked with -mod=vendor, the go command assumes that the vendor
+  # directory holds the correct copies of dependencies and ignores
+  # the dependency descriptions in go.mod.
+  # modules-download-mode: readonly
+
+# https://github.com/golangci/golangci-lint#enabled-by-default-linters
+linters:
+  enable:
+    - deadcode
+    - errcheck
+    - goconst
+    - goimports
+    - golint
+    - gosec
+    - govet
+    - ineffassign
+    - prealloc
+    - scopelint
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unparam
+    - varcheck
+  enable-all: false
+
+# all available settings of specific linters
+linters-settings:
+  govet:
+    # report about shadowed variables
+    check-shadowing: true
+
+issues:
+  # List of regexps of issue texts to exclude, empty list by default.
+  # But independently from this option we use default exclude patterns,
+  # it can be disabled by `exclude-use-default: false`. To list all
+  # excluded by default patterns execute `golangci-lint run --help`
+  exclude:
+    - "declaration of \"err\" shadows declaration at"
+    # proto generated files contain underscore names
+    - "don't use underscores in Go names; type Event_ExtendedRtcpPacket should be EventExtendedRtcpPacket"
+    # needed because we're using znly/protoc docker image
+    - "package github.com/golang/protobuf/proto is deprecated"
+
+  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  max-per-linter: 0
+
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 0

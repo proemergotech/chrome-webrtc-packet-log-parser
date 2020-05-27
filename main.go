@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	pionRtcp "github.com/pion/rtcp"
+	pionRtp "github.com/pion/rtp"
 
 	"github.com/proemergotech/chrome-webrtc-packet-log-parser/webrtc_rtclog"
 )
@@ -17,6 +18,11 @@ import (
 type ExtendedPacket struct {
 	pionRtcp.Packet
 	Type string
+}
+type ExtendedRtpPacket struct {
+	pionRtp.Packet
+	Type  string `json:"type"`
+	Error string `json:"error,omitempty"`
 }
 
 type ExtendedRtcpPacket struct {
@@ -58,8 +64,7 @@ func main() {
 		if event != nil && event.Type != nil {
 			switch *event.Type {
 			case webrtc_rtclog.Event_RTCP_EVENT:
-				packet := event.Subtype.(*webrtc_rtclog.Event_RtcpPacket)
-				rtcpPacket := packet.RtcpPacket
+				rtcpPacket := event.GetRtcpPacket()
 				if rtcpPacket == nil {
 					continue
 				}
@@ -80,7 +85,7 @@ func main() {
 
 				extendedEventSubtype := Event_ExtendedRtcpPacket{
 					RtcpPacket: &ExtendedRtcpPacket{
-						RtcpPacket: packet.RtcpPacket,
+						RtcpPacket: rtcpPacket,
 						Packets:    extendedPackets,
 						Error:      unmarshalError,
 					},
@@ -92,7 +97,29 @@ func main() {
 					return
 				}
 				fmt.Printf("%d:  %s\n", i, string(b))
+			case webrtc_rtclog.Event_RTP_EVENT:
+				rtpPacket := event.GetRtpPacket()
+				if rtpPacket == nil {
+					continue
+				}
 
+				extendedRtpPacket := ExtendedRtpPacket{
+					Type: webrtc_rtclog.MediaType_name[int32(rtpPacket.GetType())],
+					Packet: pionRtp.Packet{
+						Header:  pionRtp.Header{},
+						Payload: rtpPacket.XXX_unrecognized,
+					},
+				}
+				err := extendedRtpPacket.Header.Unmarshal(rtpPacket.Header)
+				if err != nil {
+					extendedRtpPacket.Error = err.Error()
+				}
+
+				b, err := json.Marshal(extendedRtpPacket)
+				if err != nil {
+					log.Fatal("error while marshaling event", err)
+				}
+				fmt.Printf("%d:  %s\n", i, string(b))
 			default:
 				b, err := json.Marshal(event.Subtype)
 				if err != nil {

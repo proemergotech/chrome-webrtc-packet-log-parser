@@ -1,3 +1,5 @@
+![Linters](https://github.com/proemergotech/chrome-webrtc-packet-log-parser/workflows/Linters/badge.svg)
+
 # chrome-webrtc-packet-log-parser
 
 ### Project status
